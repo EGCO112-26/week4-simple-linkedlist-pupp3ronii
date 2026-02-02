@@ -7,108 +7,42 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "node.h"
+#include <string.h>
+#include "std_node.h"
 
 int main(int argc, const char * argv[]) {
-    int c=5;
-    struct node a,b,*head ;
-    a.value = c;
-    a.next=&b;
-    head=&a;
-    b.value=head->value+3;
-    
-    struct node d;
-    b.next =&d;
-    d.value = 11;
-    //b.next->value = 11
-    //(*&d).value
-    //a.next->next->value=11
-    //head->next->next->value=11
-    d.next=NULL;
-
-    printf("%d\n", head ->value ); //what value for 5
-    printf("%d\n", head ->next->value ); //what value for 8
-    printf("%d\n", head ->next ->next ->value);
-
-    printf("Insert in the middle\n");
-
-    struct node e;
-    e.value=2;
-    e.next=&a;
-    head=&e;
-
-    printf("%d\n", head ->value ); //2
-    printf("%d\n", head ->next->value ); //5
-    printf("%d\n", head ->next ->next ->value);//8
-    printf("%d\n", head ->next ->next ->next ->value);//11
-
-    struct node f;
-    f.value = 7;
-    f.next=&b;
-    a.next=&f;
-
-    printf("%d\n", head ->value ); //2
-    printf("%d\n", head ->next->value ); //5
-    printf("%d\n", head ->next ->next ->value);//7
-    printf("%d\n", head ->next ->next ->next ->value);//8
-    printf("%d\n", head ->next ->next ->next ->next ->value);//11
-/*  Exercise I
-    1. Add 1 more than at the end
-    2. Add value(11)
-    3. Make next become NULL
- */
-    
-/*  Exercise II
-        1. Add 1 more than at the begining!!!!
-        2. Add value (2)
-        
-*/
-    typedef struct node* NodePtr;
-    NodePtr tmp=head; //add temp value to faciliate
-        printf("Print using loop\n");
-        
-    /*  Exercise III Use loop to print everything*/
-        int i,n=5;
-        for(i=0;i<n;i++){
-            printf("%3d", tmp->value);
-            tmp=tmp->next;
-          // What is missing???
-        }
-    
-   /*  Exercise IV change to while loop!! (you can use NULL to help)*/
-       tmp=head;
-         while(tmp){ //tmp!=NULL
-            printf("%3d", tmp->value);
-            tmp = tmp->next;
-
-           // What is missing???
-        }
-
-        printf("\ncreat by malloc\n");
     
  /*  Exercise V Use malloc to create all nodes, instead of create a struct!!
          //use a loop to help
           
      */
-        NodePtr temp;
-        head= (NodePtr) malloc(sizeof(struct node));
-        temp=head;
 
-        n=10;
-        for(i=0;i<n;i++)
+        NodePtr head = NULL, temp = NULL;
+
+        int n=(argc-1)/2;
+        for(int i = 0; i < n; i++)
         {
-            temp->value=7+i;
-            temp->next= (NodePtr) malloc(sizeof(struct node));
-            temp = temp->next;
+            NodePtr Newnode = (NodePtr)malloc(sizeof(Node));
+            if (Newnode == NULL) break;
+
+            Newnode->id = atoi(argv[(i*2)+1]);
+            strcpy(Newnode->name, argv[(i*2)+2]); // copy string ชื่อ
+            Newnode->next = NULL;
+
+            if (head == NULL) {
+                head = Newnode;
+                temp = head;
+            } else {
+                temp->next = Newnode;
+                temp = temp->next;
+            }
         }
 
-        temp->value=7+i*2;
-        temp ->next =NULL;
 
-        tmp=head;
-         while(tmp){ //tmp!=NULL
-            printf("%3d", tmp->value);
-            tmp = tmp->next;
+        temp=head;
+         while(temp){ //temp!=NULL
+            printf("%d %s\n", temp->id, temp->name);
+            temp = temp->next;
         }
     printf("\n");
 
@@ -123,12 +57,12 @@ int main(int argc, const char * argv[]) {
          //use a loop to help
           
      */
-     tmp=head;
-         while(tmp){ //tmp!=NULL
+     temp=head;
+         while(temp){ //tmp!=NULL
             head = head->next;
-            printf("Freeing %d\n", tmp->value);
-            free(tmp);
-            tmp = head;
+            // printf("Freeing %d\n", temp->id);
+            free(temp);
+            temp = head;
         }
     
     return 0;
