@@ -4,55 +4,66 @@
 //
 //  Created by Mingmanas Sivaraksa on 4/2/2566 BE.
 //
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "std_node.h"
 
-
 int main(int argc, const char * argv[]) {
+    
+ /*  Exercise V Use malloc to create all nodes, instead of create a struct!!
+         //use a loop to help
+          
+     */
 
-    NodePtr temp, tmp;
-    int i, n;
+        NodePtr head = NULL, temp = NULL;
 
-    n = (argc-1)/2;   // จำนวน node (กำหนดเอง)
+        int n=(argc-1)/2;
+        for(int i = 0; i < n; i++)
+        {
+            NodePtr Newnode = (NodePtr)malloc(sizeof(Node));
+            if (Newnode == NULL) break;
 
+            Newnode->id = atoi(argv[(i*2)+1]);
+            strcpy(Newnode->name, argv[(i*2)+2]); // copy string ชื่อ
+            Newnode->next = NULL;
 
-    head = (NodePtr)malloc(sizeof(struct node));
-    temp = head;
-
-
-    for (i = 0; i < n; i++) {
-       temp->id = atoi(argv[(i * 2) + 1]);
-        strcpy(temp->name, argv[(i * 2) + 2]);
-        temp->next = (NodePtr)malloc(sizeof(struct node));
-        temp = temp->next;
-    }
-
-    temp = head;
-    for (i = 0; i < n - 1; i++)
-        temp = temp->next;
-
-    free(temp->next);   
-    temp->next = NULL; 
+            if (head == NULL) {
+                head = Newnode;
+                temp = head;
+            } else {
+                temp->next = Newnode;
+                temp = temp->next;
+            }
+        }
 
 
-    tmp = head;
-    while (tmp) {
-       printf("%d %s\n", tmp->id, tmp->name);
-        tmp = tmp->next;
-    }
+        temp=head;
+         while(temp){ //temp!=NULL
+            printf("%d %s\n", temp->id, temp->name);
+            temp = temp->next;
+        }
     printf("\n");
 
+        // for(i=0;i<n;i++) {
+        //     printf("%3d", temp->value);
+        //     temp=temp->next;
+        // }
 
-    tmp = head;
-    while (tmp) {
-        head = head->next;
-        printf("Freeing %d %s\n", tmp->id, tmp->name);
 
-        free(tmp);
-        tmp = head;
-    }
 
+    /*  Exercise VI Free all node !!
+         //use a loop to help
+          
+     */
+     temp=head;
+         while(temp){ //tmp!=NULL
+            head = head->next;
+            // printf("Freeing %d\n", temp->id);
+            free(temp);
+            temp = head;
+        }
+    
     return 0;
 }
