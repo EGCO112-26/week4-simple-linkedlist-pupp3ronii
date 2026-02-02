@@ -1,8 +1,8 @@
 compile: main.c 
-	 gcc main.c -o ming
+	 gcc main.c -o puppy
 
-run: ming
-	 ./ming
+run: puppy
+	 ./puppy
 
-clean: ming
-	 rm ming
+clean: puppy
+	 rm puppy
